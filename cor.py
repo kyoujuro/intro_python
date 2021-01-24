@@ -1,4 +1,3 @@
-
 #%%
 import random
 import numpy as np
@@ -117,4 +116,47 @@ y = df["PurchaseAmount"]
 
 reg = LinearRegression().fit(X, y)
 print("Coef:", reg.coef_)
+# %%
+from sklearn.linear_model import LogisticRegression
+X = df[["age", "Sex"]]
+Z = df["WatchedCM"]
+
+reg = LogisticRegression().fit(X, Z)
+print("Coef_beta:", reg.coef_)
+print("Coef_alpha:", reg.intercept_)
+# %%
+
+Z_pre = reg.predict_proba(X)
+print(Z_pre[0:5])
+print("-----")
+print(Z[0:5])
+# %%
+
+ATE_i = Y/Z_pre[:, 1]*Z - Y/Z_pre[:, 0]*(1-Z)
+ATE = 1/len(Y)*ATE_i.sum()
+print("predicted_ATE", ATE)
+# %%
+X = df[["age","Sex","WatchedCM"]]
+y = df["PurchaseAmount"]
+
+reg2 = LinearRegression().fit(X, y)
+X_0 = X.copy()
+X_0["WatchedCM"] = 0
+Y_0 = reg2.predict(X_0)
+
+X_1 = X.copy()
+X_1["WatchedCM"] = 1
+Y_1 = reg2.predict(X_1)
+
+X = df[["age", "Sex"]]
+Z = df["WatchedCM"]
+
+reg = LogisticRegression().fit(X, Z)
+Z_pre = reg.predict_proba(X)
+print(Z_pre[0:5])
+# %%
+ATE_1_i = Y/Z_pre[:, 1]*Z + (1-Z/Z_pre[:, 1])*Y_1
+ATE_0_i = Y/Z_pre[:, 0]*(1-Z) + (1-(1-Z)/Z_pre[:, 0])*Y_0
+ATE = 1/len(Y)*(ATE_1_i-ATE_0_i).sum()
+print("Estimated_ATE",ATE)
 # %%
