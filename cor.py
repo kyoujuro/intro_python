@@ -160,3 +160,68 @@ ATE_0_i = Y/Z_pre[:, 0]*(1-Z) + (1-(1-Z)/Z_pre[:, 0])*Y_0
 ATE = 1/len(Y)*(ATE_1_i-ATE_0_i).sum()
 print("Estimated_ATE",ATE)
 # %%
+
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.model_selection import train_test_split
+
+X = df[["age", "Sex"]]
+Z = df["WatchedCM"]
+
+X_train, X_val, Z_train, Z_val = train_test_split(
+    X, Z, train_size = 0.6, random_state = 0)
+
+clf = DecisionTreeClassifier(max_depth=1, random_state=0)
+clf.fit(X_train, Z_train)
+print("Performance_of_Depth1:",clf.score(X_val, Z_val))
+# %%
+
+clf = DecisionTreeClassifier(max_depth=2, random_state=0)
+clf.fit(X_train, Z_train)
+print("Performance_of_Depth2:",clf.score(X_val, Z_val))
+
+clf = DecisionTreeClassifier(max_depth=3, random_state=0)
+clf.fit(X_train, Z_train)
+print("Performance_of_Depth3:",clf.score(X_val, Z_val))
+# %%
+
+
+from sklearn.tree import DecisionTreeRegressor
+X = df[["age", "Sex"]]
+Y = df["PurchaseAmount"]
+
+X_train, X_val, Y_train, Y_val = train_test_split(
+    X, Y, train_size = 0.6, random_state = 0)
+
+reg = DecisionTreeRegressor(max_depth=2, random_state=0)
+reg.fit(X_train, Y_train)
+print("Performance_of_Depth1:",reg.score(X_val, Y_val))
+
+reg = DecisionTreeRegressor(max_depth=3, random_state=0)
+reg.fit(X_train, Y_train)
+print("Performance_of_Depth2:",reg.score(X_val, Y_val))
+
+reg = DecisionTreeRegressor(max_depth=4, random_state=0)
+reg.fit(X_train, Y_train)
+print("Performance_of_Depth3:",reg.score(X_val, Y_val))
+# %%
+from sklearn.ensemble import RandomForestClassifier
+
+
+X = df[["age", "Sex"]]
+Z = df["WatchedCM"]
+
+
+X_train, X_val, Z_train, Z_val = train_test_split(
+    X, Z, train_size = 0.6, random_state = 0)
+
+clf = RandomForestClassifier(max_depth=1, random_state=0)
+clf.fit(X_train, Z_train)
+print("Performance_of_Depth1:",clf.score(X_val, Z_val))
+
+clf = RandomForestClassifier(max_depth=2, random_state=0)
+clf.fit(X_train, Z_train)
+print("Performance_of_Depth2:",clf.score(X_val, Z_val))
+
+clf = RandomForestClassifier(max_depth=3, random_state=0)
+clf.fit(X_train, Z_train)
+print("Performance_of_Depth3:",clf.score(X_val, Z_val))
