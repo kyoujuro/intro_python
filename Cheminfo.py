@@ -21,3 +21,6 @@ svg = view.GetDrawingText()
 SVG(svg)
 molecule = Chem.MolFromSmiles('CC(N)CCCCC')
 Chem.MolToMolBlock(molecule)
+
+
+Draw.MolsToGridImage(mols[:10], molsPerRow=5, subImgSize=(200,200))
