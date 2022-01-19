@@ -24,3 +24,12 @@ Chem.MolToMolBlock(molecule)
 
 
 Draw.MolsToGridImage(mols[:10], molsPerRow=5, subImgSize=(200,200))
+
+m = Chem.MolFromSmiles('C1=C(N=C(C(=O)N1)C(=O)N)CN')
+view = rdMolDraw2D.MolDraw2DSVG(300, 300)
+option = view.drawOptions()
+option.addAtomIndices=True
+view.DrawMolecule(m)
+view.FinishDrawing()
+svg = view.GetDrawingText()
+SVG(svg)
