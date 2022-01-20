@@ -33,3 +33,6 @@ view.DrawMolecule(m)
 view.FinishDrawing()
 svg = view.GetDrawingText()
 SVG(svg)
+
+m = Chem.MolFromSmiles('OCC3OC(OCC2OC(OC(C#N)c1ccccc1)C(O)C(O)C2O)C(O)C(O)C3O ')
+m
